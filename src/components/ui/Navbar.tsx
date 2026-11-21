@@ -1,0 +1,197 @@
+import { useState } from "react";
+import { Link } from "react-router";
+import { Search, User, ShoppingCart, ChevronDown, Menu, X } from "lucide-react";
+
+type Categorie = {
+  id: number;
+  nom: string;
+  lien: string;
+};
+
+const categories: Categorie[] = [
+  { id: 1, nom: "Mode & Accessoires", lien: "/?category=mode" },
+  { id: 2, nom: "High-Tech", lien: "/?category=high-tech" },
+  { id: 3, nom: "Sport & Loisirs", lien: "/?category=sport" },
+];
+
+export default function Navbar() {
+  const [menuOuvert, setMenuOuvert] = useState(false);
+  const [rechercheOuverte, setRechercheOuverte] = useState(false);
+
+  function basculerMenu() {
+    setMenuOuvert(!menuOuvert);
+  }
+
+  function fermerMenu() {
+    setMenuOuvert(false);
+  }
+
+  function basculerRecherche() {
+    setRechercheOuverte(!rechercheOuverte);
+  }
+
+  return (
+    <header className="sticky top-0 z-40 w-full bg-base-100 border-b border-base-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+        {/* Gauche : Bouton menu mobile + Logo E-shop */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            onClick={basculerMenu}
+            className="btn btn-ghost btn-square btn-sm lg:hidden"
+            aria-label="Menu"
+          >
+            {menuOuvert ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+          </button>
+
+          <Link
+            to="/"
+            onClick={fermerMenu}
+            className="text-xl sm:text-2xl font-bold tracking-tight text-base-content"
+          >
+            E<span className="text-primary">-shop</span>
+          </Link>
+        </div>
+
+        {/* Centre : Liens de navigation (grand écran) */}
+        <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-base-content">
+          <Link to="/" className="hover:text-primary transition-colors">
+            Accueil
+          </Link>
+
+          <div className="dropdown dropdown-hover">
+            <div
+              tabIndex={0}
+              role="button"
+              className="flex items-center gap-1 hover:text-primary transition-colors py-2"
+            >
+              <span>Catégories</span>
+              <ChevronDown className="w-4 h-4" />
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu bg-base-100 border border-base-300 rounded-box z-30 w-56 p-2 shadow-md"
+            >
+              {categories.map((cat) => (
+                <li key={cat.id}>
+                  <Link to={cat.lien}>{cat.nom}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Link to="/contact" className="hover:text-primary transition-colors">
+            Contact
+          </Link>
+        </nav>
+
+        {/* Droite : Recherche, Connexion, Panier */}
+        <div className="flex items-center gap-2 sm:gap-4">
+          <button
+            type="button"
+            onClick={basculerRecherche}
+            className="btn btn-ghost btn-circle btn-sm text-base-content hover:text-primary"
+            aria-label="Rechercher"
+          >
+            <Search className="w-5 h-5" />
+          </button>
+
+          <Link
+            to="/connexion"
+            className="flex items-center gap-1.5 text-sm font-medium text-base-content hover:text-primary transition-colors px-1.5 py-1"
+          >
+            <User className="w-5 h-5" />
+            <span className="hidden md:inline">Se connecter</span>
+          </Link>
+
+          <Link
+            to="/panier"
+            className="relative btn btn-ghost btn-circle btn-sm text-base-content hover:text-primary"
+            aria-label="Panier"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            <span className="badge badge-primary badge-xs font-bold text-primary-content h-4 min-w-4 px-1 rounded-full absolute -top-0.5 -right-0.5">
+              0
+            </span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Barre de recherche */}
+      {rechercheOuverte && (
+        <div className="border-t border-base-300 bg-base-100 px-4 py-3">
+          <div className="max-w-2xl mx-auto">
+            <label className="input input-bordered input-sm sm:input-md flex items-center gap-2 w-full">
+              <Search className="w-4 h-4 text-base-content/50" />
+              <input
+                type="search"
+                placeholder="Rechercher un produit sur E-shop..."
+                className="grow"
+              />
+              <button
+                type="button"
+                onClick={basculerRecherche}
+                className="btn btn-ghost btn-xs"
+              >
+                Fermer
+              </button>
+            </label>
+          </div>
+        </div>
+      )}
+
+      {/* Menu mobile / tablette */}
+      {menuOuvert && (
+        <nav className="lg:hidden border-t border-base-300 bg-base-100 px-4 py-4 shadow-md">
+          <ul className="menu p-0 gap-1 text-base font-medium text-base-content">
+            <li>
+              <Link to="/" onClick={fermerMenu}>
+                Accueil
+              </Link>
+            </li>
+            <li>
+              <details>
+                <summary>Catégories</summary>
+                <ul>
+                  {categories.map((cat) => (
+                    <li key={cat.id}>
+                      <Link to={cat.lien} onClick={fermerMenu}>
+                        {cat.nom}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </li>
+            <li>
+              <Link to="/contact" onClick={fermerMenu}>
+                Contact
+              </Link>
+            </li>
+          </ul>
+
+          <div className="mt-4 pt-4 border-t border-base-300 flex flex-col sm:flex-row gap-2">
+            <Link
+              to="/connexion"
+              onClick={fermerMenu}
+              className="btn btn-outline btn-sm w-full sm:w-auto flex-1"
+            >
+              Se connecter
+            </Link>
+            <Link
+              to="/inscription"
+              onClick={fermerMenu}
+              className="btn btn-primary btn-sm w-full sm:w-auto flex-1"
+            >
+              Créer un compte
+            </Link>
+          </div>
+        </nav>
+      )}
+    </header>
+  );
+}
