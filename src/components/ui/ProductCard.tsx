@@ -1,0 +1,55 @@
+import { Link } from "react-router";
+
+export type Product = {
+  id: number;
+  nom: string;
+  prix: string;
+  image: string;
+};
+
+type ProductCardProps = {
+  produit: Product;
+};
+
+export default function ProductCard({ produit }: ProductCardProps) {
+  return (
+    <div className="bg-base-100 border border-base-300 rounded-box overflow-hidden flex flex-col">
+      {/* Zone image produit */}
+      <div className="w-full h-52 sm:h-56 p-4 flex items-center justify-center bg-base-100">
+        <img
+          src={produit.image}
+          alt={produit.nom}
+          className="max-h-full max-w-full object-contain"
+        />
+      </div>
+
+      {/* Séparateur et informations */}
+      <div className="border-t border-base-300 p-4 flex flex-col gap-2 grow">
+        <h2 className="text-sm sm:text-base font-medium text-base-content">
+          {produit.nom}
+        </h2>
+
+        <p className="text-sm sm:text-base font-bold text-warning">
+          {produit.prix}
+        </p>
+
+        {/* Boutons Voire et Acheter */}
+        <div className="grid grid-cols-2 gap-2.5 mt-2">
+          <Link
+            to={`/produit/${produit.id}`}
+            className="btn btn-warning btn-sm sm:btn-md h-10 text-xs sm:text-sm font-medium text-warning-content justify-start pl-4"
+          >
+            Voire
+          </Link>
+
+          <button
+            type="button"
+            className="btn btn-primary btn-sm sm:btn-md h-10 text-xs sm:text-sm font-medium text-primary-content"
+          >
+            Acheter
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
