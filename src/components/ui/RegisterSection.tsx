@@ -1,15 +1,7 @@
 import { Link } from "react-router";
 import { User, Mail, Lock, Eye, UserPlus } from "lucide-react";
 
-type RegisterPanelProps = {
-  imageSrc?: string;
-  imageAlt?: string;
-};
-
-export default function RegisterSection({
-  imageSrc = "/images/eshop-auth-illustration.png",
-  imageAlt = "Sac E-shop, application mobile et colis",
-}: RegisterPanelProps) {
+export default function RegisterSection() {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 bg-base-100 border border-base-300 rounded-box overflow-hidden shadow-xs">
@@ -44,12 +36,12 @@ export default function RegisterSection({
                 <label className="block text-sm font-medium text-base-content mb-1">
                   Adresse e-mail
                 </label>
-                <label className="input input-bordered bg-base-200/70 flex items-center gap-2.5 w-full h-11">
-                  <Mail className="w-4 h-4 text-base-content/60 shrink-0" />
+                <label className="input input-bordered bg-base-100 flex items-center gap-2.5 w-full h-11">
+                  <Mail className="w-4 h-4 text-base-content/50 shrink-0" />
                   <input
                     type="email"
-                    defaultValue="brice@gmail.com"
-                    className="grow text-sm text-base-content"
+                    placeholder="Entrez votre adresse e-mail"
+                    className="grow text-sm"
                   />
                 </label>
               </div>
@@ -59,14 +51,14 @@ export default function RegisterSection({
                 <label className="block text-sm font-medium text-base-content mb-1">
                   Mot de passe
                 </label>
-                <label className="input input-bordered bg-base-200/70 flex items-center gap-2.5 w-full h-11">
-                  <Lock className="w-4 h-4 text-base-content/60 shrink-0" />
+                <label className="input input-bordered bg-base-100 flex items-center gap-2.5 w-full h-11">
+                  <Lock className="w-4 h-4 text-base-content/50 shrink-0" />
                   <input
                     type="password"
-                    defaultValue="1234"
-                    className="grow text-sm text-base-content"
+                    placeholder="Entrez votre mot de passe"
+                    className="grow text-sm"
                   />
-                  <Eye className="w-4 h-4 text-base-content/60 shrink-0" />
+                  <Eye className="w-4 h-4 text-base-content/50 shrink-0" />
                 </label>
               </div>
 
@@ -75,14 +67,14 @@ export default function RegisterSection({
                 <label className="block text-sm font-medium text-base-content mb-1">
                   Confirmer le mot de passe
                 </label>
-                <label className="input input-bordered bg-base-200/70 flex items-center gap-2.5 w-full h-11">
-                  <Lock className="w-4 h-4 text-base-content/60 shrink-0" />
+                <label className="input input-bordered bg-base-100 flex items-center gap-2.5 w-full h-11">
+                  <Lock className="w-4 h-4 text-base-content/50 shrink-0" />
                   <input
                     type="password"
                     placeholder="Confirmez votre mot de passe"
                     className="grow text-sm"
                   />
-                  <Eye className="w-4 h-4 text-base-content/60 shrink-0" />
+                  <Eye className="w-4 h-4 text-base-content/50 shrink-0" />
                 </label>
               </div>
 
@@ -149,9 +141,9 @@ export default function RegisterSection({
         {/* Colonne droite : Panneau vert doux + illustration */}
         <div className="w-full bg-accent/45 flex items-center justify-center p-6 sm:p-10 lg:p-12 border-t lg:border-t-0 lg:border-l border-base-300/60">
           {/* <img
-            src={imageSrc}
-            alt={imageAlt}
-            className="w-full max-w-md lg:max-w-lg h-auto object-contain"
+            src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=900&q=80"
+            alt="Sac E-shop, application mobile et colis"
+            className="w-full max-w-md lg:max-w-lg h-auto object-contain rounded-box"
           /> */}
         </div>
       </div>
