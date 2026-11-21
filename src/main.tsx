@@ -5,9 +5,15 @@ import "./index.css";
 import Dashboard from "./pages/Dashboard";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import Panier from "./pages/Panier";
+import ProductDetailPage from "./pages/ProductDetailPage";
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/" || "/Produit",
+    element: <Dashboard />,
+  },
+  {
+    path: "/Produit",
     element: <Dashboard />,
   },
   {
@@ -17,6 +23,14 @@ const router = createBrowserRouter([
   {
     path: "/Connexion",
     element: <LoginPage />,
+  },
+  {
+    path: "/Panier",
+    element: <Panier />,
+  },
+  {
+    path: "/Produit/:id",
+    element: <ProductDetailPage />,
   },
 ]);
 
