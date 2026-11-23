@@ -11,6 +11,12 @@
       "email": "papi@gmail.com",
       "mdp": "123456",
       "id": "-KhQ9yv3b2A"
+    },
+    {
+      "nom": "kevin",
+      "email": "kevin237@gmail.com",
+      "mdp": "12345",
+      "id": "FQzSHq_g5k4"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
