@@ -1,7 +1,53 @@
-import { Link } from "react-router";
-import { Mail, Lock, Eye, LogIn } from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import { Mail, Lock, Eye, LogIn, EyeOff } from "lucide-react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
+
+type Utilisateur = {
+  email: string;
+  mdp: string;
+};
 
 export default function LoginSection() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Utilisateur>();
+
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const onSubmit = async (data: Utilisateur) => {
+    try {
+      setIsLoading(true);
+      console.log(data);
+      const utilisateur = await axios.get(
+        `http://localhost:3000/Utilisateur?email=${data.email}`,
+      );
+      console.log("recherche0 ", utilisateur.data[0]);
+      if (utilisateur.data.length > 0) {
+        const user = utilisateur.data[0];
+        if (data.email == user.email && data.mdp == user.mdp) {
+          navigate("/");
+          toast.success("Connexion reussi!");
+        } else {
+          toast.error("Email ou mot de passe incorrecte!");
+        }
+      } else {
+        toast.error("Cet utilisateur n'existe pas dans la base de donner!");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Erreur lors de l'inscription.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 bg-base-100 border border-base-300 rounded-box overflow-hidden shadow-xs">
@@ -15,7 +61,7 @@ export default function LoginSection() {
               Connectez-vous pour accéder à votre compte E-shop.
             </p>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
               {/* Adresse e-mail */}
               <div>
                 <label className="block text-sm font-medium text-base-content mb-1">
@@ -27,8 +73,18 @@ export default function LoginSection() {
                     type="email"
                     placeholder="brice@gmail.com"
                     className="grow text-sm"
+                    {...register("email", {
+                      required: "Le champs email est obligattoire",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Adresse e-mail invalide",
+                      },
+                    })}
                   />
                 </label>
+                {errors.email && (
+                  <p className="text-error text-xs">{errors.email.message}</p>
+                )}
               </div>
 
               {/* Mot de passe */}
@@ -36,15 +92,32 @@ export default function LoginSection() {
                 <label className="block text-sm font-medium text-base-content mb-1">
                   Mot de passe
                 </label>
-                <label className="input input-bordered bg-base-100 flex items-center gap-2.5 w-full h-11">
+                <label className="input input-bordered bg-base-100 flex items-center gap-2.5 w-full h-11 relative">
                   <Lock className="w-4 h-4 text-base-content/50 shrink-0" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Entrez votre mot de passe"
                     className="grow text-sm"
+                    {...register("mdp", {
+                      required: "Le mot de passe est obligatoire",
+                      minLength: {
+                        value: 5,
+                        message:
+                          "Le mot de passe doit avoir au moins 5 carractère",
+                      },
+                    })}
                   />
-                  <Eye className="w-4 h-4 text-base-content/50 shrink-0" />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </label>
+                {errors.mdp && (
+                  <p className="text-error text-xs">{errors.mdp.message}</p>
+                )}
               </div>
 
               {/* Se souvenir de moi + Mot de passe oublié */}
@@ -68,10 +141,20 @@ export default function LoginSection() {
               {/* Bouton Se connecter */}
               <button
                 type="submit"
+                disabled={isLoading}
                 className="btn btn-primary w-full h-11 gap-2 text-sm font-semibold text-primary-content mt-2"
               >
-                <LogIn className="w-4 h-4" />
-                <span>Se connecter</span>
+                {isLoading ? (
+                  <>
+                    Connexion en cours...
+                    <span className="loading loading-spinner loading-sm"></span>
+                  </>
+                ) : (
+                  <>
+                    <LogIn className="w-4 h-4" />
+                    <span>Se connecter</span>
+                  </>
+                )}
               </button>
 
               {/* Séparateur ou */}

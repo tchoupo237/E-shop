@@ -1,7 +1,74 @@
 import { Link } from "react-router";
-import { User, Mail, Lock, Eye, UserPlus } from "lucide-react";
+import { User, Mail, Lock, Eye, UserPlus, EyeOff } from "lucide-react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function RegisterSection() {
+  type Utilisateur = {
+    nom: string;
+    email: string;
+    mdp: string;
+    confirmMdp: string;
+    conditions: boolean;
+  };
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<Utilisateur>();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: Utilisateur) => {
+    try {
+      setIsLoading(true);
+      // Normaliser l'adresse e-mail
+      const email = data.email.trim().toLowerCase();
+
+      // Vérifier si l'utilisateur existe déjà
+      const verification = await axios.get(
+        "http://localhost:3000/Utilisateur",
+        {
+          params: { email },
+        },
+      );
+
+      // Si l'adresse existe déjà
+      if (verification.data.length > 0) {
+        toast.error("Cette adresse e-mail est déjà utilisée !");
+        return;
+      }
+
+      // Enregistrer le nouvel utilisateur
+      const nouvelUtilisateur = {
+        nom: data.nom,
+        email: email,
+        mdp: data.mdp,
+      };
+
+      const response = await axios.post(
+        "http://localhost:3000/Utilisateur",
+        nouvelUtilisateur,
+      );
+
+      console.log(response.data);
+      toast.success("Inscription réussie !");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      toast.error("Erreur lors de l'inscription.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 bg-base-100 border border-base-300 rounded-box overflow-hidden shadow-xs">
@@ -15,7 +82,7 @@ export default function RegisterSection() {
               Inscrivez-vous pour commencer vos achats sur E-shop.
             </p>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
               {/* Nom complet */}
               <div>
                 <label className="block text-sm font-medium text-base-content mb-1">
@@ -27,8 +94,19 @@ export default function RegisterSection() {
                     type="text"
                     placeholder="Entrez votre nom complet"
                     className="grow text-sm"
+                    {...register("nom", {
+                      required: "Le nom est obligatoire",
+                      minLength: {
+                        value: 3,
+                        message:
+                          "Votre nom doit contenir au moins 3 caractères",
+                      },
+                    })}
                   />
                 </label>
+                {errors.nom && (
+                  <p className="text-error text-xs">{errors.nom.message}</p>
+                )}
               </div>
 
               {/* Adresse e-mail */}
@@ -42,8 +120,18 @@ export default function RegisterSection() {
                     type="email"
                     placeholder="Entrez votre adresse e-mail"
                     className="grow text-sm"
+                    {...register("email", {
+                      required: "L'adresse e-mail est obligatoire",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Adresse e-mail invalide",
+                      },
+                    })}
                   />
                 </label>
+                {errors.email && (
+                  <p className="text-error text-xs">{errors.email.message}</p>
+                )}
               </div>
 
               {/* Mot de passe */}
@@ -54,12 +142,28 @@ export default function RegisterSection() {
                 <label className="input input-bordered bg-base-100 flex items-center gap-2.5 w-full h-11">
                   <Lock className="w-4 h-4 text-base-content/50 shrink-0" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Entrez votre mot de passe"
                     className="grow text-sm"
+                    {...register("mdp", {
+                      required: "Le mot de passe est obligatoire",
+                      minLength: {
+                        value: 5,
+                        message: "5 caractères minimum",
+                      },
+                    })}
                   />
-                  <Eye className="w-4 h-4 text-base-content/50 shrink-0" />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </label>
+                {errors.mdp && (
+                  <p className="text-error text-xs">{errors.mdp.message}</p>
+                )}
               </div>
 
               {/* Confirmer le mot de passe */}
@@ -70,12 +174,30 @@ export default function RegisterSection() {
                 <label className="input input-bordered bg-base-100 flex items-center gap-2.5 w-full h-11">
                   <Lock className="w-4 h-4 text-base-content/50 shrink-0" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Confirmez votre mot de passe"
                     className="grow text-sm"
+                    {...register("confirmMdp", {
+                      required:
+                        "La confirmation du mot de passe est obligatoire",
+                      validate: (value) =>
+                        value === getValues("mdp") ||
+                        "Les mots de passe ne correspondent pas",
+                    })}
                   />
-                  <Eye className="w-4 h-4 text-base-content/50 shrink-0" />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </label>
+                {errors.confirmMdp && (
+                  <p className="text-error text-xs">
+                    {errors.confirmMdp.message}
+                  </p>
+                )}
               </div>
 
               {/* Conditions d'utilisation */}
@@ -84,6 +206,9 @@ export default function RegisterSection() {
                   <input
                     type="checkbox"
                     className="checkbox checkbox-primary checkbox-xs sm:checkbox-sm rounded-xs"
+                    {...register("conditions", {
+                      required: "Vous devez accepter les conditions",
+                    })}
                   />
                   <span>
                     J&apos;accepte les{" "}
@@ -95,16 +220,32 @@ export default function RegisterSection() {
                     </Link>
                   </span>
                 </label>
+                {errors.conditions && (
+                  <p className="text-error text-xs">
+                    {errors.conditions.message}
+                  </p>
+                )}
               </div>
 
               {/* Bouton S'inscrire */}
-              <button
-                type="submit"
-                className="btn btn-primary w-full h-11 gap-2 text-sm font-semibold text-primary-content mt-2"
-              >
-                <UserPlus className="w-4 h-4" />
-                <span>S&apos;inscrire</span>
-              </button>
+              {isLoading ? (
+                <button
+                  type="submit"
+                  className="btn btn-primary w-full h-11 gap-2 text-sm font-semibold text-primary-content mt-2"
+                  disabled={isLoading}
+                >
+                  Inscription en cours{" "}
+                  <span className="loading loading-spinner"></span>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="btn btn-primary w-full h-11 gap-2 text-sm font-semibold text-primary-content mt-2"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  <span>S&apos;inscrire</span>
+                </button>
+              )}
 
               {/* Séparateur ou */}
               <div className="flex items-center gap-3 py-1">
