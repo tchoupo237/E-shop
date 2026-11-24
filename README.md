@@ -8,7 +8,7 @@
 
 <div align="center">
   <!-- Remplacez le lien ci-dessous par l'adresse de votre image d'aperçu une fois poussée sur GitHub (avec ?raw=true) -->
-  <img src="URL_DE_VOTRE_IMAGE_ICI" alt="Aperçu de E-shop - Application E-Commerce" width="100%" />
+  <img src="./public/e-shop.png" alt="Aperçu de E-shop - Application E-Commerce" width="100%" />
 </div>
 
 ---
@@ -16,6 +16,7 @@
 ## 🚀 À propos du projet
 
 **E-shop** a été conçu selon les standards modernes du développement frontend avec une gestion d'état serveur performante, un typage strict et un contrôle continu de la qualité du code. Les utilisateurs peuvent :
+
 - 🔍 **Explorer le catalogue** : Parcourir les produits avec un système de recherche en temps réel et une pagination fluide.
 - 🛍️ **Gérer le panier d'achat** : Ajouter, modifier les quantités ou supprimer des articles avec calcul automatique des sous-totaux et du montant total.
 - 🔐 **S'authentifier** : Créer un compte utilisateur ou se connecter via des formulaires validés en temps réel.
@@ -74,11 +75,12 @@
 </p>
 
 ### Architecture & Outils :
-* **Core, Build & Typage :** React.js, TypeScript et Vite pour une application rapide, structurée et sécurisée sur le plan des types.
-* **UI, Design & Icônes :** Tailwind CSS et DaisyUI pour le design responsive, accompagnés de Lucide React pour les icônes.
-* **Navigation & Formulaires :** React Router pour la navigation multi-pages (catalogue, panier, connexion, inscription) et React Hook Form pour la gestion et la validation des formulaires.
-* **Data Fetching, Cache & API :** Axios pour les requêtes HTTP vers une API REST simulée avec JSON Server, couplé à TanStack Query pour la gestion du cache, des états de chargement, des erreurs et de la synchronisation des données.
-* **UX & Qualité du code :** React Hot Toast pour les notifications utilisateur et ESLint pour maintenir un code propre et cohérent.
+
+- **Core, Build & Typage :** React.js, TypeScript et Vite pour une application rapide, structurée et sécurisée sur le plan des types.
+- **UI, Design & Icônes :** Tailwind CSS et DaisyUI pour le design responsive, accompagnés de Lucide React pour les icônes.
+- **Navigation & Formulaires :** React Router pour la navigation multi-pages (catalogue, panier, connexion, inscription) et React Hook Form pour la gestion et la validation des formulaires.
+- **Data Fetching, Cache & API :** Axios pour les requêtes HTTP vers une API REST simulée avec JSON Server, couplé à TanStack Query pour la gestion du cache, des états de chargement, des erreurs et de la synchronisation des données.
+- **UX & Qualité du code :** React Hot Toast pour les notifications utilisateur et ESLint pour maintenir un code propre et cohérent.
 
 ---
 
@@ -88,3 +90,4 @@ Assurez-vous d'avoir **Node.js** et **Git** installés sur votre machine, puis c
 
 ```bash
 git clone [https://github.com/tchoupo237/E-shop.git](https://github.com/tchoupo237/E-shop.git) && cd E-shop && npm install && npm run dev
+```
