@@ -1,4 +1,4 @@
-import { Lock, Truck, ShieldCheck, Headphones } from "lucide-react";
+import { Lock } from "lucide-react";
 
 export default function OrderSummaryCard() {
   return (
