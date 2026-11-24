@@ -1,11 +1,10 @@
-const specifications = [
-  { label: "Référence", valeur: "ESH-M01-2026" },
-  { label: "Catégorie", valeur: "Accessoires" },
-  { label: "Disponibilité", valeur: "En stock" },
-  { label: "Garantie", valeur: "12 mois" },
-];
+import type { Product } from "../../pages/ProductDetailPage";
 
-export default function ProductDescriptionTabs() {
+type Props = {
+  product: Product;
+};
+
+export default function ProductDescriptionTabs({ product }: Props) {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div className="bg-base-100 border border-base-300 rounded-box p-5 sm:p-7 space-y-6">
@@ -16,38 +15,56 @@ export default function ProductDescriptionTabs() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Description détaillée */}
+          {/* Description */}
           <div className="lg:col-span-7 space-y-3 text-sm text-base-content/75 leading-relaxed">
             <p>
-              Conçue pour accompagner vos journées avec style et praticité, la{" "}
+              Découvrez le{" "}
               <strong className="text-base-content font-semibold">
-                montre n01
-              </strong>{" "}
-              allie légèreté, lisibilité et finitions soignées. Son boîtier
-              résistant et son bracelet agréable à porter conviennent aussi bien
-              aux tenues décontractées qu&apos;aux occasions plus formelles.
+                {product.title}
+              </strong>
+              .
             </p>
-            <p>
-              Chaque produit est vérifié avant expédition afin de garantir une
-              qualité constante et une mise en main immédiate dès la réception
-              de votre commande.
-            </p>
+            <p>{product.description}</p>
           </div>
 
-          {/* Tableau des caractéristiques */}
+          {/* Caractéristiques */}
           <div className="lg:col-span-5 bg-base-200/50 border border-base-300 rounded-box overflow-hidden">
             <table className="table table-zebra text-xs sm:text-sm">
               <tbody>
-                {specifications.map((item) => (
-                  <tr key={item.label}>
-                    <td className="font-medium text-base-content/70">
-                      {item.label}
-                    </td>
-                    <td className="font-semibold text-base-content text-right">
-                      {item.valeur}
-                    </td>
-                  </tr>
-                ))}
+                <tr>
+                  <td>Référence</td>
+                  <td className="text-right font-semibold">
+                    PROD-{product.id}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Catégorie</td>
+                  <td className="text-right font-semibold">
+                    {product.category}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Marque</td>
+                  <td className="text-right font-semibold">
+                    {product.brand || "Non renseignée"}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Disponibilité</td>
+                  <td className="text-right font-semibold">
+                    {product.stock > 0 ? "En stock" : "Rupture de stock"}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Stock disponible</td>
+                  <td className="text-right font-semibold">{product.stock}</td>
+                </tr>
+                <tr>
+                  <td>Note</td>
+                  <td className="text-right font-semibold">
+                    {product.rating}/5
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>

@@ -18,6 +18,10 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
   {
+    path: "/Produit/:id",
+    element: <ProductDetailPage />,
+  },
+  {
     path: "/Inscription",
     element: <RegisterPage />,
   },
@@ -28,10 +32,6 @@ const router = createBrowserRouter([
   {
     path: "/Panier",
     element: <Panier />,
-  },
-  {
-    path: "/Produit/:id",
-    element: <ProductDetailPage />,
   },
 ]);
 
