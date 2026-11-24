@@ -14,11 +14,8 @@ export default function Dashboard() {
   return (
     <>
       <Navbar onSearch={setSearch} />
-
       <SearchBar onSearch={setSearch} />
-
       <ProductGrid search={search} category={category} />
-
       <Footer />
     </>
   );
