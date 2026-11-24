@@ -1,17 +1,11 @@
 import { Link } from "react-router";
+import { type Product } from "./ProductGrid";
 
-export type Product = {
-  id: number;
-  nom: string;
-  prix: string;
-  image: string;
-};
-
-type ProductCardProps = {
+type Props = {
   produit: Product;
 };
 
-export default function ProductCard({ produit }: ProductCardProps) {
+export default function ProductCard({ produit }: Props) {
   return (
     <div className="bg-base-100 border border-base-300 rounded-box overflow-hidden flex flex-col">
       {/* Zone image produit */}
