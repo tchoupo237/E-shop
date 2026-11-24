@@ -6,6 +6,24 @@ type Props = {
 };
 
 export default function ProductCard({ produit }: Props) {
+  const handleBuy = () => {
+    const numeroWhatsApp = "237691031814";
+
+    const prix = Number(produit.prix);
+    const quantite = 1;
+    const prixTotal = prix * quantite;
+
+    const message = `Bonjour, je souhaite commander le produit suivant :
+
+Produit : ${produit.nom}
+Quantité : ${quantite}
+Prix unitaire : ${prix} $
+Prix total : ${prixTotal.toFixed(2)} $`;
+
+    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(message)}`;
+
+    window.open(url, "_blank");
+  };
   return (
     <div className="bg-base-100 border border-base-300 rounded-box overflow-hidden flex flex-col">
       {/* Zone image produit */}
@@ -24,20 +42,21 @@ export default function ProductCard({ produit }: Props) {
         </h2>
 
         <p className="text-sm sm:text-base font-bold text-warning">
-          {produit.prix}
+          {produit.prix} $
         </p>
 
-        {/* Boutons Voire et Acheter */}
+        {/* Boutons Voir et Acheter */}
         <div className="grid grid-cols-2 gap-2.5 mt-2">
           <Link
             to={`/produit/${produit.id}`}
             className="btn btn-warning btn-sm sm:btn-md h-10 text-xs sm:text-sm font-medium text-warning-content justify-start pl-4"
           >
-            Voire
+            Voir
           </Link>
 
           <button
             type="button"
+            onClick={handleBuy}
             className="btn btn-primary btn-sm sm:btn-md h-10 text-xs sm:text-sm font-medium text-primary-content"
           >
             Acheter

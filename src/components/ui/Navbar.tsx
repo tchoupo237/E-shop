@@ -1,22 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router";
 import { Search, User, ShoppingCart, ChevronDown, Menu, X } from "lucide-react";
 
-type Categorie = {
-  id: number;
-  nom: string;
-  lien: string;
+type Props = {
+  onSearch: (search: string) => void;
 };
 
-const categories: Categorie[] = [
-  { id: 1, nom: "Mode & Accessoires", lien: "/?category=mode" },
-  { id: 2, nom: "High-Tech", lien: "/?category=high-tech" },
-  { id: 3, nom: "Sport & Loisirs", lien: "/?category=sport" },
-];
+type Categorie = {
+  slug: string;
+  name: string;
+  url: string;
+};
 
-export default function Navbar() {
+export default function Navbar({ onSearch }: Props) {
   const [menuOuvert, setMenuOuvert] = useState(false);
   const [rechercheOuverte, setRechercheOuverte] = useState(false);
+  const [recherche, setRecherche] = useState("");
+  const [categories, setCategories] = useState<Categorie[]>([]);
+
+  useEffect(() => {
+    async function getCategories() {
+      try {
+        const response = await axios.get<Categorie[]>(
+          "https://dummyjson.com/products/categories",
+        );
+
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des catégories :", error);
+      }
+    }
+
+    getCategories();
+  }, []);
 
   function basculerMenu() {
     setMenuOuvert(!menuOuvert);
@@ -28,6 +45,11 @@ export default function Navbar() {
 
   function basculerRecherche() {
     setRechercheOuverte(!rechercheOuverte);
+  }
+
+  function handleSearch(value: string) {
+    setRecherche(value);
+    onSearch(value);
   }
 
   return (
@@ -57,7 +79,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Centre : Liens de navigation (grand écran) */}
+        {/* Centre : Liens de navigation */}
         <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-base-content">
           <Link to="/" className="hover:text-primary transition-colors">
             Accueil
@@ -72,13 +94,14 @@ export default function Navbar() {
               <span>Catégories</span>
               <ChevronDown className="w-4 h-4" />
             </div>
+
             <ul
               tabIndex={0}
               className="dropdown-content menu bg-base-100 border border-base-300 rounded-box z-30 w-56 p-2 shadow-md"
             >
               {categories.map((cat) => (
-                <li key={cat.id}>
-                  <Link to={cat.lien}>{cat.nom}</Link>
+                <li key={cat.slug}>
+                  <Link to={`/?category=${cat.slug}`}>{cat.name}</Link>
                 </li>
               ))}
             </ul>
@@ -129,6 +152,8 @@ export default function Navbar() {
               <Search className="w-4 h-4 text-base-content/50" />
               <input
                 type="search"
+                value={recherche}
+                onChange={(e) => handleSearch(e.target.value)}
                 placeholder="Rechercher un produit sur E-shop..."
                 className="grow"
               />
@@ -153,20 +178,22 @@ export default function Navbar() {
                 Accueil
               </Link>
             </li>
+
             <li>
               <details>
                 <summary>Catégories</summary>
                 <ul>
                   {categories.map((cat) => (
-                    <li key={cat.id}>
-                      <Link to={cat.lien} onClick={fermerMenu}>
-                        {cat.nom}
+                    <li key={cat.slug}>
+                      <Link to={`/?category=${cat.slug}`} onClick={fermerMenu}>
+                        {cat.name}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </details>
             </li>
+
             <li>
               <Link to="/contact" onClick={fermerMenu}>
                 Contact
@@ -182,6 +209,7 @@ export default function Navbar() {
             >
               Se connecter
             </Link>
+
             <Link
               to="/inscription"
               onClick={fermerMenu}
