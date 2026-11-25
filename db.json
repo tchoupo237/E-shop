@@ -17,6 +17,12 @@
       "email": "kevin237@gmail.com",
       "mdp": "12345",
       "id": "FQzSHq_g5k4"
+    },
+    {
+      "nom": "djidji",
+      "email": "djidji@gmail.com",
+      "mdp": "123456",
+      "id": "tLnHG3AHOTg"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

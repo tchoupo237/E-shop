@@ -32,6 +32,9 @@ export default function LoginSection() {
       if (utilisateur.data.length > 0) {
         const user = utilisateur.data[0];
         if (data.email == user.email && data.mdp == user.mdp) {
+          localStorage.setItem("currentUser", JSON.stringify(user));
+          window.dispatchEvent(new Event("auth-change"));
+          navigate("/");
           navigate("/");
           toast.success("Connexion reussi!");
         } else {

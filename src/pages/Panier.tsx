@@ -4,10 +4,13 @@ import CartItemsList from "../components/ui/CartItemsList";
 import OrderSummaryCard from "../components/ui/OrderSummaryCard";
 import ReassuranceBar from "../components/ui/ReassuranceBar";
 import Footer from "../components/ui/Footer";
-// import { useState } from "react";
+import { useCart } from "../context/CartContext";
 
 export default function CartPage() {
-  // const [search, setSearch] = useState("");
+  const { cart } = useCart();
+
+  const cartCount = cart.length;
+
   return (
     <div className="min-h-screen flex flex-col bg-base-100 text-base-content">
       <Navbar />
@@ -22,9 +25,10 @@ export default function CartPage() {
             <h1 className="text-2xl sm:text-3xl font-bold text-base-content">
               Mon panier{" "}
               <span className="text-base sm:text-lg font-normal text-base-content/60">
-                (3 articles)
+                ({cartCount} {cartCount > 1 ? "articles" : "article"})
               </span>
             </h1>
+
             <p className="text-sm text-base-content/60 mt-1">
               Vérifiez vos articles et passez votre commande.
             </p>

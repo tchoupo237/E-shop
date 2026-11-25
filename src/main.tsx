@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import Panier from "./pages/Panier";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import { Toaster } from "react-hot-toast";
+import { CartProvider } from "./context/CartContext";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,12 +38,14 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
-    <Toaster
-      position="top-center"
-      toastOptions={{
-        duration: 3000,
-      }}
-    />
+    <CartProvider>
+      <RouterProvider router={router} />
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
+    </CartProvider>
   </StrictMode>,
 );

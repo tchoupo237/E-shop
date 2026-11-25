@@ -9,6 +9,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import type { Product } from "../../pages/ProductDetailPage";
+import { useCart } from "../../context/CartContext";
 
 type Props = {
   product: Product;
@@ -16,8 +17,13 @@ type Props = {
 
 export default function ProductInfoPanel({ product }: Props) {
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
 
   const totalPrice = product.price * quantity;
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+  };
 
   return (
     <div className="bg-base-100 border border-base-300 rounded-box p-5 sm:p-7 space-y-5">
@@ -86,6 +92,7 @@ export default function ProductInfoPanel({ product }: Props) {
         <button
           type="button"
           disabled={product.stock === 0}
+          onClick={handleAddToCart}
           className="btn btn-primary h-11 px-6 gap-2 text-sm font-semibold text-primary-content grow sm:grow-0"
         >
           <ShoppingCart className="w-4 h-4" />
