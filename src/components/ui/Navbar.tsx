@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { Search, User, ShoppingCart, ChevronDown, Menu, X } from "lucide-react";
 
 type Props = {
-  onSearch: (search: string) => void;
+  onSearch?: (search: string) => void;
 };
 
 type Categorie = {
@@ -49,7 +49,7 @@ export default function Navbar({ onSearch }: Props) {
 
   function handleSearch(value: string) {
     setRecherche(value);
-    onSearch(value);
+    onSearch?.(value);
   }
 
   return (

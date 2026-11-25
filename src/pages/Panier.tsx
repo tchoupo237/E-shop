@@ -4,8 +4,10 @@ import CartItemsList from "../components/ui/CartItemsList";
 import OrderSummaryCard from "../components/ui/OrderSummaryCard";
 import ReassuranceBar from "../components/ui/ReassuranceBar";
 import Footer from "../components/ui/Footer";
+// import { useState } from "react";
 
 export default function CartPage() {
+  // const [search, setSearch] = useState("");
   return (
     <div className="min-h-screen flex flex-col bg-base-100 text-base-content">
       <Navbar />
